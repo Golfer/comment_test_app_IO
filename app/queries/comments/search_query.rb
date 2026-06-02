@@ -74,11 +74,10 @@ module Comments
     end
 
     def apply_ilike_terms(scope)
-      search_terms.each_with_index.reduce(scope) do |relation, (term, index)|
-        param = :"term_#{index}"
+      search_terms.reduce(scope) do |relation, term|
         relation.where(
-          "comments.body ILIKE :#{param} OR users.name ILIKE :#{param}",
-          param => ilike_pattern(term)
+          "comments.body ILIKE :pattern OR users.name ILIKE :pattern",
+          pattern: ilike_pattern(term)
         )
       end
     end
