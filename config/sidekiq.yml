@@ -1,0 +1,9 @@
+:concurrency: <%= ENV.fetch("SIDEKIQ_CONCURRENCY", 5) %>
+:queues:
+  # Highest-priority interactive updates (in-app notifications/badges).
+  - notifications
+  - default
+  - mailers
+  # Dedicated lower-priority queue for heavy bulk jobs so they don't starve
+  # interactive work (notifications, search indexing).
+  - generation

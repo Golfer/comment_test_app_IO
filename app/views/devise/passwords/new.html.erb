@@ -1,0 +1,24 @@
+<% content_for :title, "Reset password" %>
+
+<div>
+  <h2 class="text-2xl font-bold tracking-tight text-gray-900">Forgot your password?</h2>
+  <p class="mt-2 text-sm text-gray-600">
+    Enter your email and we'll send reset instructions.
+  </p>
+</div>
+
+<div class="mt-8">
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "space-y-5" }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+
+    <%= render "shared/auth/field",
+          form: f, field: :email, label: "Email address",
+          type: :email, autocomplete: "email" %>
+
+    <%= f.submit "Send reset instructions", class: AuthHelper::BTN_PRIMARY_CLASS %>
+  <% end %>
+
+  <div class="mt-6 space-y-2 text-center text-sm">
+    <%= link_to "Back to sign in", new_session_path(resource_name), class: AuthHelper::LINK_CLASS %>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<%- if controller_name != "sessions" %>
+  <p class="text-center text-sm text-gray-600">
+    Already have an account?
+    <%= link_to "Sign in", new_session_path(resource_name), class: AuthHelper::LINK_CLASS %>
+  </p>
+<% end %>
+
+<%- if devise_mapping.registerable? && controller_name != "registrations" %>
+  <p class="text-center text-sm text-gray-600">
+    Don't have an account?
+    <%= link_to "Create one", new_registration_path(resource_name), class: AuthHelper::LINK_CLASS %>
+  </p>
+<% end %>
+
+<%- if devise_mapping.recoverable? && controller_name != "passwords" && controller_name != "registrations" %>
+  <p class="text-center text-sm text-gray-600">
+    <%= link_to "Forgot your password?", new_password_path(resource_name), class: AuthHelper::LINK_CLASS %>
+  </p>
+<% end %>

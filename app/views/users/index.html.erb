@@ -1,0 +1,21 @@
+<%= render layout: "shared/app_page" do %>
+  <div class="mb-6">
+    <h1 class="text-xl font-semibold text-gray-900"><%= t("views.users.index.title") %></h1>
+    <p class="mt-1 text-sm text-gray-500"><%= t("views.users.index.subtitle") %></p>
+  </div>
+
+  <% if @users.empty? %>
+    <%= render "shared/empty_state", message: t("views.users.index.empty_message") %>
+  <% else %>
+    <ul class="space-y-2 overflow-y-auto" id="users_list">
+      <% @users.each do |user| %>
+        <%= render "users/user", user: user, current: user == current_user %>
+      <% end %>
+      <% if @next_page %>
+        <%= turbo_frame_tag "users_page_#{@next_page}",
+              loading: :lazy,
+              src: users_path(page: @next_page) %>
+      <% end %>
+    </ul>
+  <% end %>
+<% end %>

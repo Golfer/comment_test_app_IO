@@ -1,0 +1,40 @@
+<%# locals: search_result, search_comments (Hash id => Comment) %>
+<div class="space-y-4">
+  <p class="text-sm text-gray-600">
+    <% if search_result.empty? %>
+      <%= t("views.comments.search_results.empty", query: search_result.query) %>
+    <% else %>
+      <%= t("views.comments.search_results.summary", count: search_result.total, query: search_result.query) %>
+    <% end %>
+  </p>
+
+  <% if search_result.any_hits? %>
+    <ul class="space-y-3">
+      <% search_result.hits.each do |hit| %>
+        <% comment = search_comments[hit.id.to_i] %>
+        <% next unless comment %>
+        <li id="<%= dom_id(comment) %>" class="rounded-xl bg-white p-4 shadow-sm ring-1 ring-gray-200">
+          <div class="flex items-start justify-between gap-3">
+            <div class="min-w-0 flex-1">
+              <%= render "comments/author", comment: comment %>
+              <div class="mt-3 text-sm leading-relaxed text-gray-700">
+                <%= search_snippet(hit.highlighted_body) %>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3">
+            <%= link_to t("views.comments.search_results.open_in_thread"),
+                  comments_path(thread: hit.root_id, highlight: comment.id),
+                  class: "text-xs font-medium text-indigo-600 hover:text-indigo-500",
+                  data: { turbo_frame: "_top" } %>
+          </div>
+        </li>
+      <% end %>
+      <% if search_result.next_page %>
+        <%= turbo_frame_tag "comments_search_page_#{search_result.next_page}",
+              loading: :lazy,
+              src: comments_path(q: search_result.query, page: search_result.next_page) %>
+      <% end %>
+    </ul>
+  <% end %>
+</div>

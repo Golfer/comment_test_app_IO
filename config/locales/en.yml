@@ -1,0 +1,152 @@
+# Files in the config/locales directory are used for internationalization and
+# are automatically loaded by Rails. If you want to use locales other than
+# English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t "hello"
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t("hello") %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# To learn more about the API, please read the Rails Internationalization guide
+# at https://guides.rubyonrails.org/i18n.html.
+#
+# Be aware that YAML interprets the following case-insensitive strings as
+# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
+# must be quoted to be interpreted as strings. For example:
+#
+#     en:
+#       "yes": yup
+#       enabled: "ON"
+
+en:
+  notifications:
+    presentation:
+      title:
+        reply: "Reply to your comment"
+        thread_reply: "New reply in your thread"
+        mention: "You were mentioned"
+        default: "New comment"
+      message:
+        reply: "%{sender_name} replied to your comment · %{preview}"
+        thread_reply: "%{sender_name} replied in your thread · %{preview}"
+        mention: "%{sender_name} mentioned you · %{preview}"
+        default: "%{sender_name}: %{preview}"
+      email_subject:
+        reply: "%{sender_name} replied to your comment"
+        thread_reply: "%{sender_name} replied in your thread"
+        mention: "%{sender_name} mentioned you"
+        default: "New comment from %{sender_name}"
+  views:
+    shared:
+      time_ago: "%{time} ago"
+      app_header:
+        back_to_comments_title: "Back to comments"
+        brand: "Comments"
+        people: "Users"
+        notifications: "Notifications"
+        sign_out: "Sign out"
+    comments:
+      form:
+        reply_placeholder: "Write a reply... (Enter to post, Shift+Enter for newline)"
+        comment_placeholder: "Share a comment... Use @Name to mention someone"
+        reply_submit: "Reply"
+        comment_submit: "Post comment"
+      comment:
+        reply_button: "Reply"
+        open_thread: "Open thread (%{count})"
+      search_form:
+        label: "Search comments"
+        placeholder: "Search comments by text or author..."
+        clear_symbol: "×"
+        clear_title: "Clear search"
+      search_results:
+        empty: "No comments found for \"%{query}\"."
+        summary:
+          one: "1 result for \"%{query}\""
+          other: "%{count} results for \"%{query}\""
+        open_in_thread: "Open in thread"
+      thread_meta:
+        summary:
+          one: "This comment has a thread with 1 reply"
+          other: "This comment has a thread with %{count} replies"
+        open_hint: "Thread open"
+        closed_hint: "Click comment to expand"
+      thread_badge:
+        title:
+          one: "1 reply in this thread"
+          other: "%{count} replies in this thread"
+        full:
+          one: "Thread · 1 reply"
+          other: "Thread · %{count} replies"
+      index:
+        title: "Comments"
+        live_status: "Live"
+        empty_message: "No comments yet. Start the conversation above."
+    notifications:
+      index:
+        title: "Notifications"
+        unread_count:
+          one: "1 unread"
+          other: "%{count} unread"
+        mark_all_read: "Mark all read"
+        empty_title: "You're all caught up"
+        empty_message: "Replies to your comments and @mentions will show up here."
+        back_to_comments: "Back to comments"
+      notification:
+        view_reply: "View reply in thread"
+        view_comment: "View comment"
+    users:
+      index:
+        title: "People"
+        subtitle: "Click a person to see all of their comments."
+        empty_message: "No users yet."
+      show:
+        back_to_people: "All people"
+        comments_count:
+          one: "1 comment"
+          other: "%{count} comments"
+        empty_message: "%{name} hasn't posted any comments yet."
+        back_to_comments: "Back to comments"
+      user:
+        you_badge: "You"
+        comments_count:
+          one: "1 comment"
+          other: "%{count} comments"
+        online: "Online"
+      comment:
+        post_kind: "Post"
+        reply_kind: "Reply"
+        open_in_thread: "Open in thread"
+    home:
+      index:
+        brand: "Comments"
+        sign_in: "Sign in"
+        get_started: "Get started"
+        hero_title: "Comment threads with live replies"
+        hero_subtitle: "Post comments, reply in a tree, and get notified when someone responds or mentions you."
+        create_account: "Create free account"
+    layouts:
+      application:
+        title: "Comment Test App Io"
+      authentication:
+        default_title: "Sign in"
+        brand: "Comments"
+        hero_title: "Conversations that stay in sync."
+        hero_subtitle: "Real-time chat, nested comment threads, and instant notifications - built for teams who move fast."
+        feature_presence: "Live messaging with presence"
+        feature_threads: "Tree-structured comments"
+        feature_search: "Full-text search powered by Meilisearch"
+        copyright: "© %{year} %{brand}"
+    notification_mailer:
+      new_comment:
+        wrote_suffix: "wrote:"
+        view_in_thread: "View in thread"

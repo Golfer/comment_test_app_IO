@@ -1,0 +1,60 @@
+<%= render layout: "shared/app_page", locals: {
+  live_stream: true,
+  wrapper_attrs: {
+    data: {
+      controller: "comments-live",
+      comments_live_thread_value: @open_thread_id.to_i,
+      comments_live_highlight_value: @highlight_comment_id.to_i,
+      turbo_cache: false
+    }
+  }
+} do %>
+  <div class="mb-4 flex items-center justify-between gap-3">
+    <h1 class="text-xl font-semibold text-gray-900"><%= t("views.comments.index.title") %></h1>
+    <span data-comments-live-target="status" class="hidden items-center gap-1.5 rounded-full bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700 ring-1 ring-green-200">
+      <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-green-500"></span>
+      <%= t("views.comments.index.live_status") %>
+    </span>
+  </div>
+
+  <div class="mb-4">
+    <%= render "comments/search_form" %>
+  </div>
+
+  <%= render "shared/flash_messages" if notice.present? || alert.present? %>
+
+  <% unless params[:q].present? %>
+    <div class="mb-6 rounded-xl bg-white p-4 shadow-sm ring-1 ring-gray-200">
+      <%= render "comments/form", parent: nil %>
+    </div>
+  <% end %>
+
+  <div class="flex-1 overflow-y-auto"
+       id="comments_scroll"
+       data-comments-live-target="commentsScroll">
+    <% if params[:q].present? %>
+      <%= render "comments/search_results", search_result: @search_result, search_comments: @search_comments %>
+    <% else %>
+      <% if @roots.empty? %>
+        <%= render "shared/empty_state",
+              id: "comments_empty",
+              message: t("views.comments.index.empty_message") %>
+      <% end %>
+
+      <ul id="comments_list" class="space-y-4">
+        <% @roots.each do |comment| %>
+          <%= render "comments/comment",
+                comment: comment,
+                thread_reply_count: @thread_reply_counts.fetch(comment.id, 0),
+                depth: 0,
+                thread_open: @open_thread_id == comment.id %>
+        <% end %>
+        <% if @next_page %>
+          <%= turbo_frame_tag "comments_page_#{@next_page}",
+                loading: :lazy,
+                src: comments_path(page: @next_page) %>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+<% end %>

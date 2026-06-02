@@ -1,0 +1,18 @@
+<%
+  wrapper_attrs = local_assigns.fetch(:wrapper_attrs, {})
+  wrapper_attrs[:class] = [ "flex h-screen flex-col bg-gray-50", wrapper_attrs[:class] ].compact.join(" ")
+
+  data = wrapper_attrs[:data] || {}
+  controllers = data[:controller].to_s.split(/\s+/).reject(&:blank?)
+  controllers << "presence-live" unless controllers.include?("presence-live")
+  data[:controller] = controllers.join(" ")
+  wrapper_attrs[:data] = data
+%>
+<%= tag.div(**wrapper_attrs) do %>
+  <%= turbo_stream_from "comments" if local_assigns[:live_stream] %>
+  <%= render "shared/app_header" %>
+
+  <main class="mx-auto flex min-h-0 w-full max-w-3xl flex-1 flex-col px-4 py-6 sm:px-6">
+    <%= yield %>
+  </main>
+<% end %>

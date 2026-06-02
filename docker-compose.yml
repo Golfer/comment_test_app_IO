@@ -1,0 +1,116 @@
+# Development stack. Bring everything up with a single command:
+#
+#   docker compose up --build
+#
+# Services: PostgreSQL, Redis, Meilisearch, the Rails web server, a Sidekiq
+# worker, and a single esbuild + Tailwind asset watcher. The assets service
+# builds once on boot, then rebuilds automatically when JS/CSS/views change.
+
+x-app: &app
+  build:
+    context: .
+    dockerfile: Dockerfile.dev
+  image: comment_app_dev
+  env_file:
+    - .env
+  volumes:
+    - .:/rails
+    # Keep Linux-built node_modules inside the container (don't shadow with host).
+    - node_modules:/rails/node_modules
+  depends_on:
+    db:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+    meilisearch:
+      condition: service_started
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: comment_app_development
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.10
+    environment:
+      MEILI_MASTER_KEY: masterKey
+      MEILI_NO_ANALYTICS: "true"
+      MEILI_ENV: development
+    volumes:
+      - meili_data:/meili_data
+    ports:
+      - "7700:7700"
+
+  assets:
+    <<: *app
+    command: >
+      bash -c "yarn install &&
+      yarn build && yarn build:css &&
+      exec yarn watch:assets"
+    restart: unless-stopped
+
+  web:
+    <<: *app
+    command: bash -c "bin/rails db:prepare && bin/rails server -b 0.0.0.0 -p 3000"
+    ports:
+      - "3000:3000"
+    depends_on:
+      assets:
+        condition: service_started
+
+  worker:
+    <<: *app
+    command: bundle exec sidekiq -C config/sidekiq.interactive.yml
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      meilisearch:
+        condition: service_started
+      web:
+        condition: service_started
+
+  worker_generation:
+    <<: *app
+    command: bundle exec sidekiq -C config/sidekiq.generation.yml
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      meilisearch:
+        condition: service_started
+      web:
+        condition: service_started
+
+volumes:
+  pg_data:
+  redis_data:
+  meili_data:
+  node_modules:

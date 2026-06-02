@@ -1,0 +1,14 @@
+<%= turbo_frame_tag frame_id do %>
+  <% roots.each do |comment| %>
+    <%= render "comments/comment",
+          comment: comment,
+          thread_reply_count: thread_reply_counts.fetch(comment.id, 0),
+          depth: 0,
+          thread_open: open_thread_id == comment.id %>
+  <% end %>
+  <% if next_page %>
+    <%= turbo_frame_tag "comments_page_#{next_page}",
+          loading: :lazy,
+          src: comments_path(page: next_page) %>
+  <% end %>
+<% end %>

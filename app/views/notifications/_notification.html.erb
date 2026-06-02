@@ -1,0 +1,29 @@
+<%# locals: notification %>
+<% unread = !notification.read? %>
+<% kind = notification.kind.to_s %>
+<li id="<%= dom_id(notification) %>">
+  <%= link_to notification_path(notification),
+        class: "group flex gap-3 rounded-xl bg-white p-4 shadow-sm ring-1 transition #{unread ? "ring-indigo-200 bg-indigo-50/40" : "ring-gray-200 hover:ring-indigo-200 hover:bg-gray-50"}" do %>
+    <span class="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-sm font-semibold text-indigo-700">
+      <%= notification.sender_name.to_s.first&.upcase || "?" %>
+      <% if unread %>
+        <span class="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-indigo-600 ring-2 ring-white"></span>
+      <% end %>
+    </span>
+
+    <div class="min-w-0 flex-1">
+      <div class="flex flex-wrap items-start justify-between gap-2">
+        <p class="text-sm font-semibold text-gray-900"><%= notification.title %></p>
+        <time datetime="<%= notification.created_at.iso8601 %>" class="shrink-0 text-xs text-gray-500">
+          <%= t("views.shared.time_ago", time: time_ago_in_words(notification.created_at)) %>
+        </time>
+      </div>
+
+      <p class="mt-1 text-sm leading-relaxed text-gray-600 line-clamp-2"><%= notification.message_text %></p>
+
+      <%= render "shared/cta_arrow",
+            text: kind.in?(%w[reply thread_reply]) ? t("views.notifications.notification.view_reply") : t("views.notifications.notification.view_comment"),
+            class: "mt-2" %>
+    </div>
+  <% end %>
+</li>

@@ -1,0 +1,4 @@
+web: env RUBY_DEBUG_OPEN=true bin/rails server
+assets: yarn build && yarn build:css && yarn watch:assets
+worker: bundle exec sidekiq -C config/sidekiq.interactive.yml
+worker_generation: bundle exec sidekiq -C config/sidekiq.generation.yml

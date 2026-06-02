@@ -1,0 +1,26 @@
+<%
+  field_type = local_assigns.fetch(:type, :text)
+  field_required = local_assigns.fetch(:required, true)
+  field_autocomplete = local_assigns[:autocomplete]
+%>
+<div>
+  <%= form.label field, label, class: AuthHelper::LABEL_CLASS %>
+  <% if local_assigns[:hint].present? %>
+    <p class="mt-0.5 text-xs text-gray-500"><%= hint %></p>
+  <% end %>
+  <div class="mt-2">
+    <% input_options = {
+         autocomplete: field_autocomplete,
+         required: field_required,
+         class: AuthHelper::INPUT_CLASS
+       }.compact %>
+    <% case field_type %>
+    <% when :email %>
+      <%= form.email_field field, **input_options %>
+    <% when :password %>
+      <%= form.password_field field, **input_options %>
+    <% else %>
+      <%= form.text_field field, **input_options %>
+    <% end %>
+  </div>
+</div>

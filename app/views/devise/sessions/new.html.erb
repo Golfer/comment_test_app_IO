@@ -1,0 +1,41 @@
+<% content_for :title, "Sign in" %>
+
+<div>
+  <h2 class="text-2xl font-bold tracking-tight text-gray-900">Welcome back</h2>
+  <p class="mt-2 text-sm text-gray-600">
+    New here?
+    <%= link_to "Create an account", new_registration_path(resource_name), class: AuthHelper::LINK_CLASS %>
+  </p>
+</div>
+
+<div class="mt-8">
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-5" }) do |f| %>
+    <%= render "shared/auth/field",
+          form: f, field: :email, label: "Email address",
+          type: :email, autocomplete: "email" %>
+
+    <%= render "shared/auth/field",
+          form: f, field: :password, label: "Password",
+          type: :password, autocomplete: "current-password" %>
+
+    <% if devise_mapping.rememberable? %>
+      <div class="flex items-center justify-between">
+        <label class="flex items-center gap-2 text-sm text-gray-700">
+          <%= f.check_box :remember_me, class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" %>
+          Remember me
+        </label>
+
+        <% if devise_mapping.recoverable? %>
+          <%= link_to "Forgot password?", new_password_path(resource_name),
+                class: "text-sm font-semibold text-indigo-600 hover:text-indigo-500" %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%= f.submit "Sign in", class: AuthHelper::BTN_PRIMARY_CLASS %>
+  <% end %>
+
+  <div class="mt-6">
+    <%= link_to "Back to home", root_path, class: "block text-center text-sm font-medium text-gray-500 hover:text-gray-700" %>
+  </div>
+</div>

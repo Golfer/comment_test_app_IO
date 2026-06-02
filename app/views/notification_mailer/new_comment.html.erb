@@ -1,0 +1,4 @@
+<h1><%= @title %></h1>
+<p><strong><%= @sender.display_name %></strong> <%= t("views.notification_mailer.new_comment.wrote_suffix") %></p>
+<p><%= @preview %></p>
+<p><%= link_to t("views.notification_mailer.new_comment.view_in_thread"), @url %></p>

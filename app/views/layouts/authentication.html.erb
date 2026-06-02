@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-white">
+  <head>
+    <title><%= content_for(:title) || t("views.layouts.authentication.default_title") %> · <%= t("views.layouts.authentication.brand") %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+  </head>
+
+  <body class="h-full antialiased">
+    <div class="flex min-h-full">
+      <%# Brand panel — desktop only %>
+      <div class="relative hidden w-0 flex-1 lg:block">
+        <div class="absolute inset-0 bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-800">
+          <div class="flex h-full flex-col justify-between px-12 py-16 text-white">
+            <div>
+              <%= link_to root_path, class: "inline-flex items-center gap-2 text-white/90 hover:text-white" do %>
+                <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/15 text-lg font-bold">C</span>
+                <span class="text-lg font-semibold tracking-tight"><%= t("views.layouts.authentication.brand") %></span>
+              <% end %>
+            </div>
+
+            <div class="max-w-md">
+              <h1 class="text-3xl font-bold tracking-tight"><%= t("views.layouts.authentication.hero_title") %></h1>
+              <p class="mt-4 text-base leading-relaxed text-indigo-100">
+                <%= t("views.layouts.authentication.hero_subtitle") %>
+              </p>
+              <ul class="mt-8 space-y-3 text-sm text-indigo-100">
+                <li class="flex items-center gap-3">
+                  <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/15">✓</span>
+                  <%= t("views.layouts.authentication.feature_presence") %>
+                </li>
+                <li class="flex items-center gap-3">
+                  <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/15">✓</span>
+                  <%= t("views.layouts.authentication.feature_threads") %>
+                </li>
+                <li class="flex items-center gap-3">
+                  <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/15">✓</span>
+                  <%= t("views.layouts.authentication.feature_search") %>
+                </li>
+              </ul>
+            </div>
+
+            <p class="text-sm text-indigo-200/80"><%= t("views.layouts.authentication.copyright", year: Time.current.year, brand: t("views.layouts.authentication.brand")) %></p>
+          </div>
+        </div>
+      </div>
+
+      <%# Form panel %>
+      <div class="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+        <div class="mx-auto w-full max-w-sm lg:w-96">
+          <div class="mb-8 lg:hidden text-center">
+            <%= link_to root_path, class: "inline-flex items-center gap-2 text-indigo-600" do %>
+              <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white">C</span>
+              <span class="text-lg font-semibold text-gray-900"><%= t("views.layouts.authentication.brand") %></span>
+            <% end %>
+          </div>
+
+          <%= render "shared/flash_messages" %>
+          <%= yield %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

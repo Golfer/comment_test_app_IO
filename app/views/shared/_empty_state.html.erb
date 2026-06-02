@@ -1,0 +1,10 @@
+<%# locals: message, title: nil, action: nil, id: nil %>
+<div <%= tag.attributes(id: local_assigns[:id], class: "rounded-xl border-2 border-dashed border-gray-200 bg-white px-6 py-16 text-center") %>>
+  <% if local_assigns[:title].present? %>
+    <p class="text-sm font-medium text-gray-900"><%= title %></p>
+  <% end %>
+  <p class="<%= local_assigns[:title].present? ? "mt-2" : "" %> text-sm text-gray-500"><%= message %></p>
+  <% if local_assigns[:action].present? %>
+    <div class="mt-6"><%= action %></div>
+  <% end %>
+</div>

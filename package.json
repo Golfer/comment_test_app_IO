@@ -1,0 +1,27 @@
+{
+  "name": "app",
+  "private": true,
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "esbuild": "^0.28.0",
+    "eslint": "^10.4.1",
+    "globals": "^17.6.0"
+  },
+  "scripts": {
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
+    "build:css": "npx @tailwindcss/cli -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify",
+    "lint:js": "eslint app/javascript --ext .js",
+    "lint:js:fix": "eslint app/javascript --ext .js --fix",
+    "watch:js": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --watch=forever",
+    "watch:css": "npx @tailwindcss/cli -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --watch=always",
+    "watch:assets": "bash -c 'yarn watch:js & yarn watch:css & wait'"
+  },
+  "dependencies": {
+    "@hotwired/stimulus": "^3.2.2",
+    "@hotwired/turbo-rails": "^8.0.23",
+    "@tailwindcss/cli": "latest",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "tailwindcss": "latest"
+  }
+}

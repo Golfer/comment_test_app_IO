@@ -1,0 +1,39 @@
+<% content_for :title, "Sign up" %>
+
+<div>
+  <h2 class="text-2xl font-bold tracking-tight text-gray-900">Create your account</h2>
+  <p class="mt-2 text-sm text-gray-600">
+    Already registered?
+    <%= link_to "Sign in", new_session_path(resource_name), class: AuthHelper::LINK_CLASS %>
+  </p>
+</div>
+
+<div class="mt-8">
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "space-y-5" }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+
+    <%= render "shared/auth/field",
+          form: f, field: :name, label: "Full name",
+          autocomplete: "name", hint: "Shown to other members in chats." %>
+
+    <%= render "shared/auth/field",
+          form: f, field: :email, label: "Email address",
+          type: :email, autocomplete: "email" %>
+
+    <% password_hint = @minimum_password_length ? "#{@minimum_password_length} characters minimum" : nil %>
+    <%= render "shared/auth/field",
+          form: f, field: :password, label: "Password",
+          type: :password, autocomplete: "new-password",
+          hint: password_hint %>
+
+    <%= render "shared/auth/field",
+          form: f, field: :password_confirmation, label: "Confirm password",
+          type: :password, autocomplete: "new-password" %>
+
+    <%= f.submit "Create account", class: AuthHelper::BTN_PRIMARY_CLASS %>
+  <% end %>
+
+  <p class="mt-6 text-center text-xs leading-5 text-gray-500">
+    By signing up you agree to use this app responsibly. We'll never share your email.
+  </p>
+</div>

@@ -1,0 +1,45 @@
+# syntax=docker/dockerfile:1
+# Development image: Ruby + Node + Yarn with gems and JS deps preinstalled.
+# Source is bind-mounted via docker-compose, so code changes are live.
+
+ARG RUBY_VERSION=3.3.7
+FROM docker.io/library/ruby:$RUBY_VERSION-slim
+
+WORKDIR /rails
+
+ENV RAILS_ENV="development" \
+    BUNDLE_PATH="/usr/local/bundle" \
+    PATH="/usr/local/node/bin:$PATH"
+
+# System deps: postgres client/headers, vips for image processing, build tools.
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y \
+      build-essential git curl libjemalloc2 libvips \
+      libpq-dev postgresql-client libyaml-dev pkg-config && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+# Node + Yarn (matching .node-version). Node 25+ no longer ships corepack in the
+# official tarball — install it via npm, then activate Yarn Berry.
+ARG NODE_VERSION=25.2.1
+ARG YARN_VERSION=3.6.4
+RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
+    /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
+    rm -rf /tmp/node-build-master
+RUN npm install -g corepack && \
+    corepack enable && \
+    corepack prepare "yarn@${YARN_VERSION}" --activate
+
+# Install gems first (cached unless Gemfile changes).
+COPY Gemfile Gemfile.lock ./
+RUN bundle install
+
+# Install JS deps (cached unless package manifests change).
+COPY package.json yarn.lock .yarnrc.yml ./
+RUN yarn install
+
+COPY . .
+
+EXPOSE 3000
+
+# Default command is overridden per-service in docker-compose.
+CMD ["bin/rails", "server", "-b", "0.0.0.0"]

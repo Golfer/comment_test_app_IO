@@ -1,0 +1,17 @@
+<%# locals: parent (Comment or nil) %>
+<%= form_with url: comments_path, scope: :comment, class: "space-y-2",
+      data: {
+        controller: "submit-on-enter",
+        action: "turbo:submit-end->submit-on-enter#resetOnSuccess",
+        turbo_frame: "_top"
+      } do |f| %>
+  <%= f.hidden_field :parent_id, value: parent&.id %>
+  <%= f.text_area :body,
+        required: true,
+        rows: parent ? 2 : 3,
+        placeholder: parent ? t("views.comments.form.reply_placeholder") : t("views.comments.form.comment_placeholder"),
+        class: AuthHelper::INPUT_CLASS + " resize-none",
+        data: { action: "keydown->submit-on-enter#submitOnEnter" } %>
+  <%= f.submit(parent ? t("views.comments.form.reply_submit") : t("views.comments.form.comment_submit"),
+               class: AuthHelper::BTN_PRIMARY_CLASS + " sm:w-auto sm:px-6") %>
+<% end %>

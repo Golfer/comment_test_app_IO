@@ -1,0 +1,32 @@
+# PostgreSQL. Versions 9.3 and up are supported.
+#
+# Install the pg driver:
+#   gem install pg
+# On macOS with Homebrew:
+#   gem install pg -- --with-pg-config=/usr/local/bin/pg_config
+#
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= ENV.fetch("DATABASE_HOST", "localhost") %>
+  port: <%= ENV.fetch("DATABASE_PORT", 5432) %>
+  username: <%= ENV.fetch("DATABASE_USERNAME", "postgres") %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD", "postgres") %>
+
+development:
+  <<: *default
+  database: <%= ENV.fetch("DATABASE_NAME", "comment_app_development") %>
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: comment_app_test
+
+production:
+  <<: *default
+  # Prefer a single DATABASE_URL in production (set by Docker Compose / host).
+  url: <%= ENV["DATABASE_URL"] %>
+  database: <%= ENV.fetch("DATABASE_NAME", "comment_app_production") %>

@@ -1,0 +1,10 @@
+<%# locals: comment %>
+<div class="flex items-center gap-2">
+  <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-xs font-semibold text-indigo-700">
+    <%= comment.user.initials %>
+  </span>
+  <div>
+    <p class="text-sm font-medium text-gray-900"><%= comment.user.display_name %></p>
+    <p class="text-xs text-gray-500"><%= t("views.shared.time_ago", time: time_ago_in_words(comment.created_at)) %></p>
+  </div>
+</div>

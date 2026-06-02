@@ -1,0 +1,24 @@
+<%= form_with url: comments_path, method: :get, class: "relative",
+      data: { controller: "comment-search", comment_search_target: "form" } do %>
+  <label for="comment_search" class="sr-only"><%= t("views.comments.search_form.label") %></label>
+  <div class="relative">
+    <svg class="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+      <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clip-rule="evenodd" />
+    </svg>
+    <%= search_field_tag :q, params[:q],
+          id: "comment_search",
+          placeholder: t("views.comments.search_form.placeholder"),
+          autocomplete: "off",
+          class: AuthHelper::INPUT_CLASS + " pl-10 pr-10",
+          data: {
+            comment_search_target: "input",
+            action: "input->comment-search#queueSearch keydown.enter->comment-search#submitNow"
+          } %>
+    <% if params[:q].present? %>
+      <%= link_to t("views.comments.search_form.clear_symbol"), comments_path,
+            class: "absolute right-3 top-1/2 -translate-y-1/2 text-lg leading-none text-gray-400 hover:text-gray-600",
+            title: t("views.comments.search_form.clear_title"),
+            data: { turbo_frame: "_top" } %>
+    <% end %>
+  </div>
+<% end %>

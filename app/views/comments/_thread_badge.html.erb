@@ -1,0 +1,18 @@
+<%# locals: comment, thread_reply_count: 0, compact: false %>
+<% thread_reply_count = local_assigns.fetch(:thread_reply_count, 0) %>
+<% compact = local_assigns.fetch(:compact, false) %>
+<span id="<%= dom_id(comment, :thread_badge) %>">
+  <% if thread_reply_count.positive? %>
+    <span class="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-200"
+          title="<%= t("views.comments.thread_badge.title", count: thread_reply_count) %>">
+      <svg class="h-3.5 w-3.5 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M6 3.75A2.75 2.75 0 0 1 8.75 1h2.5A2.75 2.75 0 0 1 14 3.75v.443c.502.094 1.006.287 1.5.578A3.75 3.75 0 0 1 18 8.25v5.5A2.75 2.75 0 0 1 15.25 16.5H9.562a3.75 3.75 0 0 1-1.5-1.2L4.22 12.28a.75.75 0 0 1 .09-1.06 3.75 3.75 0 0 0 1.14-2.7V8.25A3.75 3.75 0 0 1 6 3.75Zm2.5-1a1.25 1.25 0 0 0-1.25 1.25v.443a.75.75 0 0 1-1.5 0V3.75A2.75 2.75 0 0 1 8.75 1h2.5ZM6 8.25A2.25 2.25 0 0 0 3.75 10.5v1.77c0 .67.27 1.31.75 1.78l3.84 3.42H15.25c.69 0 1.25-.56 1.25-1.25v-5.5c0-.69-.56-1.25-1.25-1.25H6Z" clip-rule="evenodd" />
+      </svg>
+      <% if compact %>
+        <%= thread_reply_count %>
+      <% else %>
+        <%= t("views.comments.thread_badge.full", count: thread_reply_count) %>
+      <% end %>
+    </span>
+  <% end %>
+</span>

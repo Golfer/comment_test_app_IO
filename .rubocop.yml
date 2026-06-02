@@ -1,0 +1,24 @@
+# Omakase Ruby styling for Rails
+inherit_gem: { rubocop-rails-omakase: rubocop.yml }
+
+AllCops:
+  NewCops: enable
+  Exclude:
+    - "db/schema.rb"
+    - "db/migrate/*.rb"
+    - "bin/**/*"
+    - "node_modules/**/*"
+    - "vendor/**/*"
+    - "tmp/**/*"
+    - "storage/**/*"
+
+# Service/Query objects intentionally expose a single `call`.
+Metrics/MethodLength:
+  Max: 25
+  Exclude:
+    - "app/workers/**/*"
+
+# Bulk-generation worker is necessarily a bit longer/complex.
+Metrics/AbcSize:
+  Exclude:
+    - "app/workers/**/*"

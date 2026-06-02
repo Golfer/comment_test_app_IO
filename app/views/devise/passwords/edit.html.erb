@@ -1,0 +1,28 @@
+<% content_for :title, "Change password" %>
+
+<div>
+  <h2 class="text-2xl font-bold tracking-tight text-gray-900">Set a new password</h2>
+  <p class="mt-2 text-sm text-gray-600">
+    Choose a strong password you haven't used here before.
+  </p>
+</div>
+
+<div class="mt-8">
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: "space-y-5" }) do |f| %>
+    <%= f.hidden_field :reset_password_token %>
+
+    <%= render "devise/shared/error_messages", resource: resource %>
+
+    <% password_hint = @minimum_password_length ? "#{@minimum_password_length} characters minimum" : nil %>
+    <%= render "shared/auth/field",
+          form: f, field: :password, label: "New password",
+          type: :password, autocomplete: "new-password",
+          hint: password_hint %>
+
+    <%= render "shared/auth/field",
+          form: f, field: :password_confirmation, label: "Confirm new password",
+          type: :password, autocomplete: "new-password" %>
+
+    <%= f.submit "Update password", class: AuthHelper::BTN_PRIMARY_CLASS %>
+  <% end %>
+</div>

@@ -1,0 +1,32 @@
+<%# locals: user, current: false %>
+<% current = local_assigns.fetch(:current, false) %>
+<li id="<%= dom_id(user) %>">
+  <%= link_to user_path(user),
+        class: "group flex items-center gap-3 rounded-xl bg-white p-4 shadow-sm ring-1 ring-gray-200 transition hover:ring-indigo-200 hover:bg-indigo-50/40" do %>
+    <span class="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-sm font-semibold text-indigo-700">
+      <%= user.initials %>
+      <span data-presence-dot
+            class="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 ring-2 ring-white <%= "hidden" unless user.online? %>"
+            aria-hidden="true"></span>
+    </span>
+
+    <div class="min-w-0 flex-1">
+      <div class="flex flex-wrap items-center gap-2">
+        <p class="text-sm font-semibold text-gray-900"><%= user.display_name %></p>
+        <% if current %>
+          <span class="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-gray-600"><%= t("views.users.user.you_badge") %></span>
+        <% end %>
+      </div>
+      <p class="text-xs text-gray-500">
+        <%= t("views.users.user.comments_count", count: user.comments_count) %>
+        <span data-presence-label class="<%= "hidden" unless user.online? %>">
+          · <span class="font-medium text-green-700"><%= t("views.users.user.online") %></span>
+        </span>
+      </p>
+    </div>
+
+    <svg class="h-5 w-5 shrink-0 text-gray-300 group-hover:text-indigo-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+      <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 0 1 .02-1.06L11.168 10 7.23 6.29a.75.75 0 1 1 1.04-1.08l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.06-.02Z" clip-rule="evenodd" />
+    </svg>
+  <% end %>
+</li>

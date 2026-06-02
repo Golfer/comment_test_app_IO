@@ -1,0 +1,29 @@
+<%= render layout: "shared/app_page" do %>
+  <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h1 class="text-xl font-semibold text-gray-900"><%= t("views.notifications.index.title") %></h1>
+      <% if @unread_count.positive? %>
+        <p class="mt-1 text-sm text-gray-500"><%= t("views.notifications.index.unread_count", count: @unread_count) %></p>
+      <% end %>
+    </div>
+    <% if @unread_count.positive? %>
+      <%= button_to t("views.notifications.index.mark_all_read"),
+            read_all_notifications_path,
+            method: :post,
+            class: "rounded-lg bg-white px-3 py-1.5 text-sm font-medium text-indigo-600 ring-1 ring-indigo-200 hover:bg-indigo-50" %>
+    <% end %>
+  </div>
+
+  <% if @notifications.empty? %>
+    <%= render "shared/empty_state",
+          title: t("views.notifications.index.empty_title"),
+          message: t("views.notifications.index.empty_message"),
+          action: link_to(t("views.notifications.index.back_to_comments"), comments_path, class: "inline-flex text-sm font-medium text-indigo-600 hover:text-indigo-500") %>
+  <% else %>
+    <ul class="space-y-3 overflow-y-auto">
+      <% @notifications.each do |notification| %>
+        <%= render "notifications/notification", notification: notification %>
+      <% end %>
+    </ul>
+  <% end %>
+<% end %>

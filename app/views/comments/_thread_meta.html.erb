@@ -1,0 +1,17 @@
+<%# locals: comment, thread_reply_count: 0, thread_open: false %>
+<% thread_reply_count = local_assigns.fetch(:thread_reply_count, 0) %>
+<% thread_open = local_assigns.fetch(:thread_open, false) %>
+<% if thread_reply_count.positive? %>
+  <div id="<%= dom_id(comment, :thread_meta) %>" class="mt-3 rounded-lg bg-gray-50 px-3 py-2 ring-1 ring-gray-200">
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <p class="text-xs font-medium text-gray-700">
+        <%= t("views.comments.thread_meta.summary", count: thread_reply_count) %>
+      </p>
+      <span data-thread-target="hint" class="text-xs <%= thread_open ? "font-medium text-green-700" : "text-gray-500" %>">
+        <%= thread_open ? t("views.comments.thread_meta.open_hint") : t("views.comments.thread_meta.closed_hint") %>
+      </span>
+    </div>
+  </div>
+<% else %>
+  <div id="<%= dom_id(comment, :thread_meta) %>" class="hidden" aria-hidden="true"></div>
+<% end %>

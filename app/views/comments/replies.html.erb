@@ -1,0 +1,11 @@
+<%= turbo_frame_tag dom_id(@parent, :replies), class: "block mt-3" do %>
+  <ul id="<%= dom_id(@parent, :replies_list) %>" class="space-y-3">
+    <% @replies.each do |reply| %>
+      <%= render "comments/comment",
+            comment: reply,
+            thread_reply_count: @thread_reply_counts.fetch(reply.id, 0),
+            depth: reply.ancestry_depth - @parent.ancestry_depth,
+            thread_expanded: true %>
+    <% end %>
+  </ul>
+<% end %>
