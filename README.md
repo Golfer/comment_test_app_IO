@@ -102,7 +102,17 @@ variables in your deployment.
 
 ## Quality
 
+GitHub Actions (`.github/workflows/ci.yml`) runs on every push and pull request:
+
+- **test** — `bin/rails test` with SimpleCov (minimum 90% line coverage)
+- **lint_ruby** — RuboCop
+- **lint_js** — ESLint (`app/javascript`)
+- **security** — Brakeman
+
+Local equivalents:
+
 ```bash
+bundle exec rails test   # same coverage gate as CI
 bundle exec rubocop      # omakase styling
 bundle exec brakeman     # security scan
 yarn lint:js             # ESLint for Stimulus/JS
