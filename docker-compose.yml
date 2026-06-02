@@ -13,6 +13,9 @@ x-app: &app
   image: comment_app_dev
   env_file:
     - .env
+  environment:
+    # Dockerfile.dev installs Node under /usr/local/node; keep it on PATH for web/worker shells.
+    PATH: "/usr/local/node/bin:/usr/local/bundle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   volumes:
     - .:/rails
     # Keep Linux-built node_modules inside the container (don't shadow with host).

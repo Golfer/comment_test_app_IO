@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+builds_dir="app/assets/builds"
+need_build=false
+for file in application.js application.css; do
+  if [[ ! -f "${builds_dir}/${file}" ]]; then
+    need_build=true
+    break
+  fi
+done
+
+if [[ "${need_build}" == "true" ]]; then
+  yarn_bin="$(command -v yarn 2>/dev/null || true)"
+  if [[ -z "${yarn_bin}" && -x /usr/local/node/bin/yarn ]]; then
+    yarn_bin="/usr/local/node/bin/yarn"
+  fi
+  if [[ -n "${yarn_bin}" ]]; then
+    "${yarn_bin}" build
+    "${yarn_bin}" build:css
+  else
+    echo "Missing ${builds_dir}/application.{js,css} and yarn is not on PATH." >&2
+    echo "Run: docker compose run --rm --no-deps assets bash -lc 'yarn build && yarn build:css'" >&2
+    exit 1
+  fi
+fi
+
+exec bundle exec rails test "$@"

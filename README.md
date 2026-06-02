@@ -112,8 +112,15 @@ GitHub Actions (`.github/workflows/ci.yml`) runs on every push and pull request:
 Local equivalents:
 
 ```bash
-bundle exec rails test   # same coverage gate as CI
+bin/test                 # builds JS/CSS if needed, then runs tests (same coverage gate as CI)
 bundle exec rubocop      # omakase styling
 bundle exec brakeman     # security scan
 yarn lint:js             # ESLint for Stimulus/JS
+```
+
+HTML tests need compiled assets in `app/assets/builds/` (gitignored). With Docker, either run
+`bin/test` inside `web` (after `docker compose up --build`) or build once via:
+
+```bash
+docker compose run --rm --no-deps assets bash -lc 'yarn build && yarn build:css'
 ```
