@@ -32,7 +32,7 @@ gem "sidekiq", "~> 7.3"
 # Full-text search engine integration for comments [https://github.com/meilisearch/meilisearch-rails]
 gem "meilisearch-rails"
 # Tree-structured comments via materialized path [https://github.com/stefankroes/ancestry]
-gem "ancestry", "~> 4.3"
+gem "ancestry", "~> 5.1"
 # Generate realistic fake data for the bulk comment generator
 gem "faker"
 # Image variants for user avatars
