@@ -26,7 +26,7 @@ gem "noticed"
 # Redis: Action Cable pub/sub, Sidekiq queue, and Rails cache store
 gem "redis", ">= 4.0.1"
 # Sidekiq 7.3 scheduler is incompatible with connection_pool 3.x
-gem "connection_pool", "~> 2.4"
+gem "connection_pool", "~> 3.0"
 # Background job processing for heavy workers (mass comment generation, re-indexing)
 gem "sidekiq", "~> 7.3"
 # Full-text search engine integration for comments [https://github.com/meilisearch/meilisearch-rails]
